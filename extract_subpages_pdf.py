@@ -28,7 +28,10 @@ def get_subpage_urls(main_page_url):
         if href:
             # Resolve relative URLs to absolute URLs
             full_url = urljoin(main_page_url, href)
-            urls.append(full_url)
+            # check if url already exits
+            if full_url not in urls:
+                urls.append(full_url)
+        
     
     return urls
 
@@ -38,8 +41,9 @@ subpage_urls = get_subpage_urls(main_page_url)
 cntr = 0
 for url in subpage_urls:
     cntr += 1
-    pdf_name = (str)(cntr) + '.pdf'
-    print(url)
+    # make pdf name from last part of url
+    pdf_name = str(cntr) + '_' + url.split('/')[-1] + '.pdf'
+    print(" -- pdf name ",pdf_name)
     time.sleep(2)
     #command line 
     os.system("wkhtmltopdf "+ url + " " + pdf_name)
